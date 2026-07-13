@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customize Your Dad Hat</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Unbounded:wght@700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: ##f5f0e8; padding: 20px; font-family: 'Space Mono', monospace; }
+        .container { max-width: 600px; margin: 0 auto; background: ##A11019; border: 16px solid ##870000; border-radius: 10px; box-shadow: 1.125rem 0.675rem 0 ##D19A3B; }
+        .header { background: ##870000; padding: 28px 26px; text-align: center; }
+        .header h1 { font-family: 'Unbounded', sans-serif; font-size: 24px; font-weight: 700; color: ##fff; letter-spacing: 0.12em; text-transform: uppercase; }
+        .preview { background: ##f5f0e8; padding: 40px 26px; text-align: center; min-height: 320px; display: flex; align-items: center; justify-content: center; }
+        .preview img { max-width: 100%; max-height: 280px; }
+        .controls { background: ##A11019; padding: 28px 26px; }
+        .control-group { margin-bottom: 28px; }
+        .label { font-family: 'Unbounded', sans-serif; font-size: 14px; font-weight: 700; color: ##fff; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 14px; }
+        .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 20px; }
+        .heart-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 24px; }
+        button { padding: 12px; border: 3px solid transparent; border-radius: 6px; cursor: pointer; font-family: 'Space Mono', monospace; transition: all 0.2s; background-color: rgba(255,255,255,0.1); color: ##fff; font-size: 12px; font-weight: bold; }
+        button:hover { transform: scale(1.05); border-color: rgba(255,255,255,0.5); }
+        button.active { border-color: ##f5f0e8; box-shadow: 0 0 0 2px ##A11019, 0 0 0 4px ##f5f0e8; }
+        .heart { border-radius: 50%; }
+        .info { background: rgba(255,255,255,0.1); border: 2px solid rgba(255,255,255,0.2); border-radius: 6px; padding: 16px; margin-bottom: 20px; color: ##fff; }
+        .cta { background: ##870000; padding: 24px 26px; text-align: center; }
+        .cta button { background: ##D19A3B; color: ##870000; padding: 14px 32px; font-family: 'Unbounded', sans-serif; font-size: 16px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; border: none; margin: 0; }
+        .cta button:hover { background: ##e0aa4d; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Customize Your Dad Hat</h1>
+        </div>
+
+        <div class="preview">
+            <img id="preview" src="https://dashaleealexander-svg.github.io/dad-hats/Black%20Hat,%20White%20Hearts.png" alt="Hat">
+        </div>
+
+        <div class="controls">
+            <div class="control-group">
+                <div class="label">Hat Color</div>
+                <div class="grid" id="hatGrid"></div>
+            </div>
+
+            <div class="control-group">
+                <div class="label">Heart Color</div>
+                <div class="heart-grid" id="heartGrid"></div>
+            </div>
+
+            <div class="info">
+                <div><strong>Hat:</strong> <span id="hatName">Black</span></div>
+                <div><strong>Heart:</strong> <span id="heartName">White</span></div>
+            </div>
+        </div>
+
+        <div class="cta">
+            <button onclick="alert('Redirecting to order form...')">Customize Yours</button>
+        </div>
+    </div>
+
+    <script>
+        const hats = ['Black', 'Dark Green', 'Light Blue', 'Navy', 'Pink', 'Red', 'Stone', 'White'];
+        const hearts = ['Pink', 'Red', 'White', 'Yellow', 'Orange', 'Light Blue', 'Dark Blue', 'Green', 'Dark Green'];
+        const hatColors = { Black: '##1a1a1a', 'Dark Green': '##2d5016', 'Light Blue': '##87ceeb', Navy: '##001f3f', Pink: '##ff69b4', Red: '##dc143c', Stone: '##a39e93', White: '##f5f0e8' };
+        const heartColors = { Pink: '##ff69b4', Red: '##dc143c', White: '##ffffff', Yellow: '##ffff00', Orange: '##ff8c00', 'Light Blue': '##87ceeb', 'Dark Blue': '##00008b', Green: '##228b22', 'Dark Green': '##006400' };
+
+        let selectedHat = 'Black';
+        let selectedHeart = 'White';
+
+        function updatePreview() {
+            const url = `https://dashaleealexander-svg.github.io/dad-hats/${selectedHat}%20Hat,%20${selectedHeart}%20Hearts.png`;
+            document.getElementById('preview').src = url;
+            document.getElementById('hatName').textContent = selectedHat;
+            document.getElementById('heartName').textContent = selectedHeart;
+        }
+
+        hats.forEach((hat, i) => {
+            const btn = document.createElement('button');
+            btn.textContent = hat.substring(0, 1);
+            btn.style.background = hatColors[hat];
+            btn.style.color = hat === 'White' ? '##000' : '##fff';
+            if(i === 0) btn.classList.add('active');
+            btn.onclick = () => {
+                document.querySelectorAll('##hatGrid button').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                selectedHat = hat;
+                updatePreview();
+            };
+            document.getElementById('hatGrid').appendChild(btn);
+        });
+
+        hearts.forEach((heart, i) => {
+            const btn = document.createElement('button');
+            btn.className = 'heart';
+            btn.style.background = heartColors[heart];
+            btn.style.border = '3px solid rgba(255,255,255,0.2)';
+            btn.textContent = '';
+            if(i === 2) btn.classList.add('active');
+            btn.onclick = () => {
+                document.querySelectorAll('##heartGrid button').forEach(b => b.
